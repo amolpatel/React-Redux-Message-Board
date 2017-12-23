@@ -12,4 +12,6 @@ var config = {
 };
 firebase.initializeApp(config);
 
+
+// DB connection that is referencing the posts
 export const database = firebase.database().ref('posts/');
