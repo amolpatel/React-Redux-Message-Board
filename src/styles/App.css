@@ -21,6 +21,10 @@
     margin-top: 1rem;
 }
 
+.no-wrap {
+    word-wrap: normal;
+}
+
 html {
     margin-bottom: 65px;
 }
