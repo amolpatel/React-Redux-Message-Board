@@ -3,6 +3,7 @@ import '../styles/App.css';
 import _ from 'lodash';
 import { connect } from 'react-redux';
 import { getPosts, savePost, deletePost } from '../actions/PostActions';
+import { getUser, logout } from '../actions/UserActions';
 import { Field, reduxForm, reset } from 'redux-form';
 import PostCard from '../components/PostCard';
 
@@ -10,6 +11,17 @@ class App extends Component {
 
   componentWillMount() {
     this.props.getPosts();
+    this.props.getUser();
+    if(this.props.user.loading === false && this.props.user.email === undefined) {
+      this.props.history.replace('/Login');
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.user.loading === false && nextProps.user.email === undefined) {
+      this.props.history.replace('/Login');
+    }
+
   }
 
   // Every post is going to have a post
@@ -17,11 +29,11 @@ class App extends Component {
   renderPosts() {
     return _.map(this.props.posts, (post, key) => {
       return (
-        <PostCard key={key}>
+          <PostCard key={key}>
             <h3 className="card-title">{post.title}</h3>
             <p className="card-text">{post.body}</p>
             <button className="btn btn-danger" onClick={() => { this.props.deletePost(key)}}>Delete</button>
-        </PostCard>
+          </PostCard>
       );
     });
   }
@@ -33,7 +45,7 @@ class App extends Component {
             {...field.input}
             placeholder={`Please enter a ${field.label}`}
             className={field.class}
-        />
+            />
     );
   }
 
@@ -44,40 +56,47 @@ class App extends Component {
   render() {
     const { handleSubmit } = this.props; // pull from props
     return (
-      <div>
-        <div className="container">
-          {this.renderPosts()}
+        <div>
+          <div className="navbar">
+            <button className="btn btn-danger" onClick={() => {this.props.logout()}}>Sign out</button>
+          </div>
+          <div className="container">
+            <div className="main">
+              {this.renderPosts()}
+            </div>
+            <div className="navbar fixed-bottom">
+              <form className="container"  onSubmit={handleSubmit(this.onSubmit.bind(this))}>
+                <Field
+                    name="title"
+                    component={this.renderField}
+                    label="title"
+                    class="footer-title"
+                    />
+                <Field
+                    name="body"
+                    component={this.renderField}
+                    label="body"
+                    class="footer-body"
+                    />
+                <button type="submit" className="btn footer-button">Post</button>
+              </form>
+            </div>
+          </div>
         </div>
-        <div className="navbar fixed-bottom">
-          <form className="container"  onSubmit={handleSubmit(this.onSubmit.bind(this))}>
-            <Field
-              name="title"
-              component={this.renderField}
-              label="title"
-              class="footer-title"
-            />
-            <Field
-              name="body"
-              component={this.renderField}
-              label="body"
-              class="footer-body"
-            />
-            <button type="submit" className="btn footer-button">Post</button>
-          </form>
-        </div>
-      </div>
     );
   }
 }
+
 // instantiating a new redux form
 let form = reduxForm({
   form: 'NewPost'
 })(App);
 
 // Bind the new form to our app
-form = connect(state => ({
-  posts: state.posts
-}), { getPosts, savePost, deletePost }
+form = connect((state, ownProps) => ({
+      posts: state.posts,
+      user: state.user
+    }), { getPosts, savePost, deletePost, getUser, logout }
 )(form);
 
 export default form;

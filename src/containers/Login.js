@@ -2,36 +2,68 @@ import React, { Component } from 'react';
 import SimpleBox from '../components/SimpleBox';
 import InputField from '../components/InputField';
 import FooterFormButton from '../components/FooterFormButton';
+import { connect } from 'react-redux';
+import { login, getUser } from '../actions/UserActions';
+import ErrorAlert from '../components/ErrorAlert';
 
-export default class Login extends Component {
+class Login extends Component {
   // storing in React state
   constructor(props) {
     super(props);
     this.state = {
       email: '',
-      password: ''
+      password: '',
+      error: ''
     }
   }
+
+  componentWillMount() {
+    this.props.getUser();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.user.email !== undefined) {
+      this.props.history.push('/');
+    }
+  }
+
+  submitLogin(event) {
+    event.preventDefault();
+    this.props.login(this.state.email, this.state.password).catch(err => {
+      this.setState({
+        error: err
+      });
+    });
+  }
+
   renderBody() {
+    const errStyle = {
+      borderColor: 'red'
+    };
     return (
-        <div>
-          <InputField
-              id="email"
-              type="text"
-              label="Email"
-              inputAction={(event) => this.setState({email: event.target.value})}/>
-          <InputField
-              id="password"
-              type="password"
-              label="Password"
-              inputAction={(event) => this.setState({password: event.target.value})}/>
-          <FooterFormButton
-              submitLabel="Sign in"
-              otherLabel="Create Account"
-              goToLink="/CreateAccount"
-              {...this.props}/>
-        </div>
-    )
+        <form onSubmit={event => {this.submitLogin(event);}}>
+          <div>
+            <InputField
+                id="email"
+                type="text"
+                label="Email"
+                style={this.state.error ? errStyle : null}
+                inputAction={(event) => this.setState({email: event.target.value})}/>
+            <InputField
+                id="password"
+                type="password"
+                label="Password"
+                style={this.state.error ? errStyle : null}
+                inputAction={(event) => this.setState({password: event.target.value})}/>
+            {this.state.error && <ErrorAlert>Your username or password is incorrect!</ErrorAlert>}
+            <FooterFormButton
+                submitLabel="Sign in"
+                otherLabel="Create Account"
+                goToLink="/CreateAccount"
+                {...this.props}/>
+          </div>
+        </form>
+    );
   }
   render() {
     return (
@@ -41,3 +73,9 @@ export default class Login extends Component {
     )
   }
 }
+
+function mapStateToProps(state) {
+  return { user: state.user};
+}
+
+export default connect(mapStateToProps, { login, getUser })(Login);

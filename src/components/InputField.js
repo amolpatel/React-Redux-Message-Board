@@ -14,6 +14,7 @@ const InputField = props => {
               onChange={props.inputAction}
               id={props.id}
               className="form-control"
+              style={props.style}
               placeholder={`Please enter ${isVowel(props.label[0]) ? "an" : "a"} ${props.label}`}
             />
         </div>
