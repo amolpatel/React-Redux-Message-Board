@@ -3,8 +3,9 @@ import SimpleBox from '../components/SimpleBox';
 import InputField from '../components/InputField';
 import FooterFormButton from '../components/FooterFormButton';
 import { connect } from 'react-redux';
-import { login, getUser } from '../actions/UserActions';
+import { login, getUser, googleLogin, twitterLogin } from '../actions/UserActions';
 import ErrorAlert from '../components/ErrorAlert';
+import SocialMediaLogin from '../components/SocialMediaLogin';
 
 class Login extends Component {
   // storing in React state
@@ -61,6 +62,7 @@ class Login extends Component {
                 otherLabel="Create Account"
                 goToLink="/CreateAccount"
                 {...this.props}/>
+            <SocialMediaLogin {...this.props} />
           </div>
         </form>
     );
@@ -78,4 +80,4 @@ function mapStateToProps(state) {
   return { user: state.user};
 }
 
-export default connect(mapStateToProps, { login, getUser })(Login);
+export default connect(mapStateToProps, { login, getUser, googleLogin, twitterLogin })(Login);

@@ -65,11 +65,13 @@ class CreateAccount extends Component {
                 id="password"
                 type="password"
                 label="Password"
+                style={this.state.error ? errStyle : null}
                 inputAction={(event) => this.setState({password: event.target.value})}/>
             <InputField
                 id="confirm-password"
                 type="password"
                 label="Confirm Password"
+                style={this.state.error ? errStyle : null}
                 inputAction={(event) => this.setState({confirmPassword: event.target.value})}/>
             {this.state.error && <ErrorAlert>{this.state.error}</ErrorAlert>}
             <FooterFormButton

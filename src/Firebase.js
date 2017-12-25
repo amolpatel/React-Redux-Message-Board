@@ -16,3 +16,5 @@ firebase.initializeApp(config);
 // DB connection that is referencing the posts
 export const database = firebase.database().ref('posts/');
 export const auth = firebase.auth();
+export const googleProvider = new firebase.auth.GoogleAuthProvider;
+export const twitterProvider = new firebase.auth.TwitterAuthProvider;
