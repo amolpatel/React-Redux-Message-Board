@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom'
 import ListPosts from './containers/ListPosts'
 import Login from './containers/Login';
 import CreateAccount from './containers/CreateAccount';
+import Authenticated from './containers/Authenticated';
+import Loading from './containers/Loading';
 import registerServiceWorker from './registerServiceWorker'
 import { applyMiddleware, createStore } from 'redux'
 import thunk from 'redux-thunk'
@@ -14,15 +16,15 @@ const createStoreWithMiddleware = applyMiddleware(thunk)(createStore);
 ReactDOM.render(
     <Provider store={createStoreWithMiddleware(reducers)}>
       <BrowserRouter>
-        <LoadingComponent>
+        <Loading>
           <Switch>
             <Route path="/CreateAccount" component={CreateAccount} />
             <Route path="/Login" component={Login} />
-            <AuthenticatedComponent>
+            <Authenticated>
               <Route path="/" component={ListPosts} />
-            </AuthenticatedComponent>
+            </Authenticated>
           </Switch>
-        </LoadingComponent>
+        </Loading>
       </BrowserRouter>
     </Provider>,
     document.getElementById('root'));

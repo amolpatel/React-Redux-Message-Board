@@ -1,5 +1,5 @@
-import POST_STATUS from '../actions/PostActions';
-import USER_STATUS from '../actions/UserActions';
+import { POST_STATUS } from '../actions/PostActions';
+import { USER_STATUS } from '../actions/UserActions';
 
 export default function(state = {}, action) {
   switch(action.type) {

@@ -26,7 +26,7 @@ class LoadingComponent extends Component {
     if((!userLoading && !postsLoading) || (this.props.user === null)) {
       return (
         <div>
-          {children}
+          {this.props.children}
         </div>
       )
     }
