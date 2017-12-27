@@ -5,6 +5,7 @@ import Login from './containers/Login';
 import CreateAccount from './containers/CreateAccount';
 import Authenticated from './containers/Authenticated';
 import Loading from './containers/Loading';
+import PostDetail from './containers/PostDetail';
 import registerServiceWorker from './registerServiceWorker'
 import { applyMiddleware, createStore } from 'redux'
 import thunk from 'redux-thunk'
@@ -21,7 +22,8 @@ ReactDOM.render(
             <Route path="/CreateAccount" component={CreateAccount} />
             <Route path="/Login" component={Login} />
             <Authenticated>
-              <Route path="/" component={ListPosts} />
+              <Route path="/:id" component={PostDetail} />
+              <Route exact path="/" component={ListPosts} />
             </Authenticated>
           </Switch>
         </Loading>

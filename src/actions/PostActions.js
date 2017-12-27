@@ -10,12 +10,12 @@ export function getPosts(){
     });
     database.on('value', data => {
       dispatch({
-        type: POST_STATUS,
-        payload: false
-      });
-      dispatch({
         type: FETCH_POSTS,
         payload: data.val()
+      });
+      dispatch({
+        type: POST_STATUS,
+        payload: false
       });
     }, () => {
       dispatch({

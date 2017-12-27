@@ -6,6 +6,7 @@ import { getPosts, savePost, deletePost } from '../actions/PostActions';
 import { getUser, logout } from '../actions/UserActions';
 import { Field, reduxForm, reset } from 'redux-form';
 import PostCard from '../components/PostCard';
+import Link from 'react-router-dom/es/Link';
 
 class App extends Component {
 
@@ -16,6 +17,11 @@ class App extends Component {
     return _.map(this.props.posts, (post, key) => {
       return (
           <PostCard key={key}>
+            <Link to={`/${key}`}>
+              <h3 className="card-title">
+                {post.title}
+               </h3>
+            </Link>
             <h3 className="card-title">{post.title}</h3>
             <p className="card-text">{post.body}</p>
             <button className="btn btn-danger" onClick={() => { this.props.deletePost(key)}}>Delete</button>
